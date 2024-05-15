@@ -1,6 +1,6 @@
 module geo
 
-go 1.21.0
+go 1.22
 
 require (
 	google.golang.org/grpc v1.63.2

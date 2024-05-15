@@ -36,7 +36,7 @@ func NewApp(config config.AppConf, logger *zap.Logger) *App {
 func (a *App) Run() {
 	lis, err := net.Listen("tcp", ":"+a.config.RPCServer.Port)
 	if err != nil {
-		log.Printf("failed to listen: %s", err.Error())
+		a.logger.Fatal("failed to listen: %s", zap.Error(err))
 	}
 
 	s := grpc.NewServer()
