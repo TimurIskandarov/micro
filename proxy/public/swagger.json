@@ -1,0 +1,217 @@
+{
+  "consumes": [
+    "application/json",
+    "multipart/form-data"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "Документация Geo API.",
+    "title": "Geo API.",
+    "version": "1.0.0"
+  },
+  "basePath": "/",
+  "paths": {
+    "/api/address/geocode": {
+      "post": {
+        "security": [
+          {
+            "Bearer": [
+              "[]"
+            ]
+          }
+        ],
+        "description": "Получение адреса по долготе и широте",
+        "tags": [
+          "geo"
+        ],
+        "operationId": "GeocodeRequest",
+        "parameters": [
+          {
+            "example": "{\"lat\":\"59.7221\",\"lng\":\"30.4554\"}",
+            "description": "Координаты",
+            "name": "Coordinates",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "GeocodeResponse",
+            "schema": {
+              "$ref": "#/definitions/GeocodeResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/address/search": {
+      "post": {
+        "security": [
+          {
+            "Bearer": [
+              "[]"
+            ]
+          }
+        ],
+        "description": "Получение координат по адресу",
+        "tags": [
+          "geo"
+        ],
+        "operationId": "AddressRequest",
+        "parameters": [
+          {
+            "example": "{\"query\": \"москва тверская\"}",
+            "description": "Адрес",
+            "name": "Query",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "AddressResponse",
+            "schema": {
+              "$ref": "#/definitions/AddressResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/login": {
+      "post": {
+        "description": "Авторизация пользователя",
+        "tags": [
+          "auth"
+        ],
+        "operationId": "LoginRequest",
+        "parameters": [
+          {
+            "example": "{\"name\":\"tim\",\"password\":\"123\"}",
+            "description": "Авторизация",
+            "name": "Authorization",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "LoginResponse",
+            "schema": {
+              "$ref": "#/definitions/LoginResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/register": {
+      "post": {
+        "description": "Регистрация нового пользователя",
+        "tags": [
+          "auth"
+        ],
+        "operationId": "RegisterRequest",
+        "parameters": [
+          {
+            "example": "{\"name\":\"tim\",\"password\":\"123\"}",
+            "description": "Регистрация",
+            "name": "Registration",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "RegisterResponse",
+            "schema": {
+              "$ref": "#/definitions/RegisterResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Address": {
+      "type": "object",
+      "properties": {
+        "lat": {
+          "type": "string",
+          "x-go-name": "Lat"
+        },
+        "lon": {
+          "type": "string",
+          "x-go-name": "Lng"
+        },
+        "value": {
+          "type": "string",
+          "x-go-name": "Value"
+        }
+      },
+      "x-go-package": "proxy/internal/model"
+    },
+    "AddressResponse": {
+      "type": "object",
+      "properties": {
+        "Addresses": {
+          "$ref": "#/definitions/Address"
+        }
+      },
+      "x-go-package": "proxy/public"
+    },
+    "GeocodeResponse": {
+      "type": "object",
+      "properties": {
+        "Addresses": {
+          "$ref": "#/definitions/Address"
+        }
+      },
+      "x-go-package": "proxy/public"
+    },
+    "LoginResponse": {
+      "type": "object",
+      "properties": {
+        "Token": {
+          "description": "in:body\nToken содержит информацию о токене",
+          "type": "string"
+        }
+      },
+      "x-go-package": "proxy/public"
+    },
+    "RegisterResponse": {
+      "type": "object",
+      "properties": {
+        "Token": {
+          "description": "in:body\nToken содержит информацию о регистрации",
+          "type": "string"
+        }
+      },
+      "x-go-package": "proxy/public"
+    }
+  },
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  }
+}

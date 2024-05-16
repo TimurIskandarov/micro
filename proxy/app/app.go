@@ -9,6 +9,7 @@ import (
 	"proxy/internal/controller/geo"
 	geoService "proxy/internal/service/geo"
 	proto "proxy/pkg/geo_v1"
+	"proxy/public"
 	"proxy/server"
 
 	"github.com/go-chi/chi"
@@ -38,9 +39,10 @@ func (a *App) Run() {
 	geoController := geo.NewController(geoSrv, a.logger)
 
 	r := chi.NewRouter()
-	
-	r.Get("/api", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello from API"))
+
+	r.Get("/swagger", public.SwaggerUI)
+	r.Get("/public/*", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./public/swagger.json")
 	})
 
 	r.Group(func(r chi.Router) {

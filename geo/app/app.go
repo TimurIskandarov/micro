@@ -67,6 +67,8 @@ func (a *App) Run() {
 	geoSrv := geoService.NewService(geoRepo, redisPool, a.logger)
 	proto.RegisterGeoV1Server(s, geoV1.NewImplementation(geoSrv))
 
+	a.logger.Info("server started")
+
 	if err := s.Serve(lis); err != nil {
 		log.Printf("failed to serve: %s", err.Error())
 	}
