@@ -8,6 +8,8 @@ import (
 	"go.uber.org/zap"
 )
 
+var _ Controller = (*controller)(nil)
+
 type Controller interface {
 	AddressSearch(w http.ResponseWriter, r *http.Request)
 	Geocode(w http.ResponseWriter, r *http.Request)

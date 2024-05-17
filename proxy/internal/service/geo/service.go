@@ -4,14 +4,15 @@ import (
 	"context"
 
 	"proxy/internal/model"
-	proto "proxy/pkg/geo_v1"
+
+	proto "geo/pkg/geo_v1"
 )
 
 var _ Service = (*service)(nil)
 
 type Service interface {
-	AddressSearch(ctx context.Context, in model.SearchIn) (*model.SearchOut, error)
-	Geocode(ctx context.Context, in model.GeocodeIn) (*model.GeocodeOut, error)
+	AddressSearch(ctx context.Context, in *model.SearchIn) (*model.SearchOut, error)
+	Geocode(ctx context.Context, in *model.GeocodeIn) (*model.GeocodeOut, error)
 }
 
 type service struct {

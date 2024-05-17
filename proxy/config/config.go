@@ -13,7 +13,8 @@ type AppConf struct {
 	AppName   string    `yaml:"app_name"`
 	Logger    Logger    `yaml:"logger"`
 	Server    Server    `yaml:"server"`
-	GeoServer GeoServer `yaml:"geo_server"`
+	AuthServer RPCServer `yaml:"auth_server"`
+	GeoServer RPCServer `yaml:"geo_server"`
 }
 
 type Server struct {
@@ -21,7 +22,7 @@ type Server struct {
 	ShutdownTimeout time.Duration `yaml:"shutdown_timeout"`
 }
 
-type GeoServer struct {
+type RPCServer struct {
 	Host string `yaml:"host"`
 	Port string `yaml:"port"`
 }
@@ -45,7 +46,11 @@ func NewAppConf() AppConf {
 		Server: Server{
 			Port: os.Getenv("SERVER_PORT"),
 		},		
-		GeoServer: GeoServer{
+		AuthServer: RPCServer{
+			Host: os.Getenv("AUTH_GRPC_HOST"),
+			Port: os.Getenv("AUTH_GRPC_PORT"),
+		},		
+		GeoServer: RPCServer{
 			Host: os.Getenv("GEO_GRPC_HOST"),
 			Port: os.Getenv("GEO_GRPC_PORT"),
 		},

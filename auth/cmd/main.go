@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	// "auth/app"
+	"auth/app"
 	"auth/config"
 	"auth/logger"
 
@@ -22,7 +22,7 @@ func main() {
 	if err != nil {
 		logger.Fatal("error loading .env file")
 	}
-	
-	// app := app.NewApp(conf, logger)
-	// app.Run()
+
+	app := app.NewApp(conf, logger)
+	app.Run()
 }

@@ -11,7 +11,7 @@ import (
 
 func (s *service) Register(ctx context.Context, in model.RegisterIn) model.RegisterOut {
 	// проверка существования пользователя
-	if _, ok := users[in.Name]; ok {
+	if _, ok := users[in.Email]; ok {
 		s.logger.Error("this user already exists")
 		return model.RegisterOut{
 			Message: "this user already exists",
@@ -33,7 +33,7 @@ func (s *service) Register(ctx context.Context, in model.RegisterIn) model.Regis
 	}
 
 	// сохранение пароля
-	users[in.Name] = string(hashedPassword)
+	users[in.Email] = string(hashedPassword)
 
 	return model.RegisterOut{
 		Message: "successful user registration",

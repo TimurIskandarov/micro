@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"fmt"
-	"log"
 	"net"
 	"time"
 
@@ -70,6 +69,6 @@ func (a *App) Run() {
 	a.logger.Info("server started")
 
 	if err := s.Serve(lis); err != nil {
-		log.Printf("failed to serve: %s", err.Error())
+		a.logger.Fatal("failed to serve:", zap.Error(err))
 	}
 }

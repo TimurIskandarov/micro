@@ -16,7 +16,7 @@ func (s *service) Login(ctx context.Context, in model.AuthorizedIn) model.Author
 	}
 
 	// если пользователь не найден или пароль не совпадает
-	if hashedPassword, ok := users[in.Name]; !(ok && comparator(hashedPassword)) {
+	if hashedPassword, ok := users[in.Email]; !(ok && comparator(hashedPassword)) {
 		s.logger.Error("wrong input data")
 		return model.AuthorizedOut{
 			Message: "wrong input data",
@@ -25,7 +25,7 @@ func (s *service) Login(ctx context.Context, in model.AuthorizedIn) model.Author
 	}
 
 	// создание токена
-	_, token, _ := s.token.Encode(map[string]interface{}{in.Name: in.Password})
+	_, token, _ := s.token.Encode(map[string]interface{}{in.Email: in.Password})
 
 	return model.AuthorizedOut{
 		AccessToken: token,

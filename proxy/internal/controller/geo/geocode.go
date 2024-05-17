@@ -10,9 +10,9 @@ import (
 )
 
 func (c *controller) Geocode(w http.ResponseWriter, r *http.Request) {
-	var req model.GeocodeIn
+	req := new(model.GeocodeIn)
 
-	err := json.NewDecoder(r.Body).Decode(&req)
+	err := json.NewDecoder(r.Body).Decode(req)
 	if err != nil {
 		c.logger.Error("json decode error", zap.Error(err))
 		http.Error(w, err.Error(), http.StatusBadRequest)

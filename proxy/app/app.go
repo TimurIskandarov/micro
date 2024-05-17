@@ -1,20 +1,23 @@
 package app
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 
 	"proxy/config"
-	"proxy/internal/controller/geo"
-	geoService "proxy/internal/service/geo"
-	proto "proxy/pkg/geo_v1"
 	"proxy/public"
 	"proxy/server"
 
+	"proxy/client"
+
+	"proxy/internal/controller/auth"
+	"proxy/internal/controller/geo"
+
+	authService "proxy/internal/service/auth"
+	geoService "proxy/internal/service/geo"
+	
 	"github.com/go-chi/chi"
 	"go.uber.org/zap"
-	"google.golang.org/grpc"
 )
 
 type App struct {
@@ -27,15 +30,12 @@ func NewApp(conf config.AppConf, logger *zap.Logger) *App {
 }
 
 func (a *App) Run() {
-	dsn := fmt.Sprintf("%s:%s", a.conf.GeoServer.Host, a.conf.GeoServer.Port)
+	client := client.New(a.conf, a.logger)
 
-	conn, err := grpc.Dial(dsn, grpc.WithInsecure())
-	if err != nil {
-		a.logger.Fatal("grpc server connect error:", zap.Error(err))
-	}
-
-	client := proto.NewGeoV1Client(conn)
-	geoSrv := geoService.NewService(client)
+	authSrv := authService.NewService(client.Auth)
+	authController := auth.NewController(authSrv, a.logger)	
+	
+	geoSrv := geoService.NewService(client.Geo)
 	geoController := geo.NewController(geoSrv, a.logger)
 
 	r := chi.NewRouter()
@@ -44,6 +44,9 @@ func (a *App) Run() {
 	r.Get("/public/*", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./public/swagger.json")
 	})
+
+	r.Post("/api/register", authController.Register)
+	r.Post("/api/login", authController.Login)
 
 	r.Group(func(r chi.Router) {
 		r.Post("/api/address/search", geoController.AddressSearch)

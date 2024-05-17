@@ -3,15 +3,12 @@ package auth_v1
 import (
 	"context"
 
+	"auth/internal/converter"
 	proto "auth/pkg/auth_v1"
 )
 
 func (i *Implementation) Register(ctx context.Context, req *proto.RegisterRequest) (*proto.RegisterResponse, error) {
-	// out, err := i.authService.Register(ctx, *converter.ToRegisterRequest(req))
-	// if err != nil {
-	// 	return nil, err
-	// }
+	out := i.authService.Register(ctx, *converter.ToRegisterRequest(req))
 
-	// return converter.ToSearchResponseProto(out), nil
-	return &proto.RegisterResponse{}, nil
+	return converter.ToRegisterResponseProto(out), nil
 }
