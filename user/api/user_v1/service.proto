@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package user_v1;
+
+option go_package = "user/pkg/user_v1;user_v1";
+
+service UserV1 {
+    rpc Profile(ProfileRequest) returns (ProfileResponse);
+    rpc List(ListRequest) returns (ListResponse);
+    rpc Create(CreateRequest) returns (CreateResponse);
+}
+
+message User {
+    string name = 1;
+    string email = 2;
+    string phone = 3;
+    string password = 4;
+}
+
+message ProfileRequest {
+    string email = 1;
+}
+
+message ProfileResponse {
+    int64 id = 1;
+    User user = 2;
+}
+
+message ListRequest {}
+
+message ListResponse {
+    repeated User users = 1;
+}
+
+message CreateRequest {
+    User user = 1;
+}
+
+message CreateResponse {
+    int64 id = 1;
+}
