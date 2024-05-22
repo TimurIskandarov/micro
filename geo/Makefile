@@ -2,7 +2,7 @@ OS := $(shell uname -o)
 LOCAL_BIN := "$(CURDIR)/bin"
 
 LOCAL_MIGRATION_DIR=./migrations
-LOCAL_MIGRATION_DSN="host=localhost port=54321 dbname=geo user=geo-user password=geo-password sslmode=disable"
+LOCAL_MIGRATION_DSN="host=localhost port=54322 dbname=geo user=geo-user password=geo-password sslmode=disable"
 
 ifeq ($(OS), Msys)
 	GO_PLUGIN=bin/protoc-gen-go.exe

@@ -7,7 +7,7 @@ import (
 	proto "user/pkg/user_v1"
 )
 
-func (i *Implementation) List(ctx context.Context) (*proto.ListResponse, error) {
+func (i *Implementation) List(ctx context.Context, req *proto.ListRequest) (*proto.ListResponse, error) {
 	users, err := i.userService.List(ctx)
 	if err != nil {
 		return nil, err

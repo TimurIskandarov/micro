@@ -3,3 +3,4 @@ go 1.21
 use ./auth
 use ./geo
 use ./proxy
+use ./user

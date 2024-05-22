@@ -6,7 +6,6 @@ import (
 	"user/internal/model"
 	"user/internal/repository/user"
 
-	"github.com/gomodule/redigo/redis"
 	"go.uber.org/zap"
 )
 
@@ -20,14 +19,12 @@ type Service interface {
 
 type service struct {
 	repo   user.Repository
-	cache  *redis.Pool
 	logger *zap.Logger
 }
 
-func NewService(repo user.Repository, cache *redis.Pool, logger *zap.Logger) *service {
+func NewService(repo user.Repository, logger *zap.Logger) *service {
 	return &service{
 		repo:   repo,
-		cache:  cache,
 		logger: logger,
 	}
 }

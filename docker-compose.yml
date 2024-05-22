@@ -1,7 +1,8 @@
 version: '3'
 
 volumes:
-  postgres_volume:
+  postgres_user_volume:
+  postgres_geo_volume:
 
 networks:
     mylocal:
@@ -16,14 +17,25 @@ services:
       - "6379:6379"
     networks:
       - mylocal
-  db:
+  db_user:
     image: postgres:15-alpine
-    container_name: "postgres_db"
+    container_name: "db_user"
     restart: always
-    env_file: geo.env
+    env_file: user.env
     ports:
       - "54321:5432"
     volumes:
-      - postgres_volume:/var/lib/postgresql/data
+      - postgres_user_volume:/var/lib/postgresql/data
+    networks:
+      - mylocal
+  db_geo:
+    image: postgres:15-alpine
+    container_name: "db_geo"
+    restart: always
+    env_file: geo.env
+    ports:
+      - "54322:5432"
+    volumes:
+      - postgres_geo_volume:/var/lib/postgresql/data
     networks:
       - mylocal
